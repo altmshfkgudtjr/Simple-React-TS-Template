@@ -1,4 +1,4 @@
-export const noselect = ()=> `
+export const noselect = (): string => `
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
 	-khtml-user-select: none;
@@ -7,7 +7,7 @@ export const noselect = ()=> `
 	user-select: none;
 `;
 
-export const transition = ()=>`
+export const transition = (): string =>`
 	cubic-bezier(0.25, 0.1, 0.25, 1);
 `;
 
