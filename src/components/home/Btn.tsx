@@ -1,4 +1,3 @@
-import React from 'react'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 // containers
@@ -12,9 +11,9 @@ import palette from 'lib/styles/palette'
 const Btn = () => {
 	const dispatch = useDispatch();
 
-	const modalOn = () => {
-		dispatch(pushModal('INFO', InfoModal, {title: "Simple"}));
-	};
+	const modalOn = () => dispatch(
+		pushModal('INFO', InfoModal, {title: "Simple"})
+	);
 
 	return <Button onClick={modalOn}>Simple</Button>
 }

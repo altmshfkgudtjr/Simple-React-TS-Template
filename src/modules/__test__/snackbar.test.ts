@@ -1,4 +1,6 @@
 import reducer, * as actions from '../snackbar'
+// types
+import { SnackbarType } from 'modules/snackbar'
 
 describe('snackbar', () => {
 	let state = reducer(undefined, {});
@@ -9,11 +11,11 @@ describe('snackbar', () => {
 
 	it('should create actions', () => {
 		const expectedActions = [
-			{ type: 'snackbar/APPEND_SNACKBAR' },
+			{ type: 'snackbar/APPEND_SNACKBAR', payload: { text: 'Test', type: 'SUCCESS' } },
 			{ type: 'snackbar/DELETE_SNACKBAR' },
 		];
 		const snackbarActions = [
-			actions.appendSnackbar() ,
+			actions.appendSnackbar({ text: 'Test', type: 'SUCCESS' }) ,
 			actions.deleteSnackbar() ,
 		];
 		expect(snackbarActions).toEqual(expectedActions);
@@ -24,7 +26,7 @@ describe('snackbar', () => {
 			expect(state).toEqual({
 				show: false,
 				text: '',
-				type: 'info'
+				type: 'INFO'
 			});
 		});
 
@@ -42,7 +44,7 @@ describe('snackbar', () => {
 			state = reducer(state, actions.deleteSnackbar());
 			expect(state.show).toBe(false);
 			expect(state.text).toBe('');
-			expect(state.type).toBe('info');
+			expect(state.type).toBe('INFO');
 		});
 	});
 });

@@ -1,4 +1,4 @@
-export const zIndexSet = (layer) => `
+export const zIndexSet = (layer: number): string => `
 	${layer}
 `;
 

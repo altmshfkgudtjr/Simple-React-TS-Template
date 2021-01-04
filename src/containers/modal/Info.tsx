@@ -1,4 +1,3 @@
-import React from 'react'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 // components
@@ -12,12 +11,12 @@ import animations from 'lib/styles/animations'
 // modules
 import { newSnackbar } from 'modules/snackbar'
 
-/*
-	PreventModalOff: <function> Default function, Don't remove.
-	ModalOff: <function> Default function, Don't remove.
-	args: <Dictionary> Arguments
-*/
-const InfoModal = ({ PreventModalOff, ModalOff, args }) => {
+interface InfoModalProps {
+	PreventModalOff(): void;		// Default function, Don't remove.
+	ModalOff(): void;												// Default function, Don't remove.
+	args?: any;															// Arguments
+}
+const InfoModal = ({ PreventModalOff, ModalOff, args }: InfoModalProps) => {
 	const dispatch = useDispatch();
 	const onClickBadge = () => dispatch(newSnackbar('Simple is best.'));
 

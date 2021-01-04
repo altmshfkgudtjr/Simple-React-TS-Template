@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 // lib
 import * as styles from 'lib/styles/styles'
@@ -9,11 +8,10 @@ import animations from 'lib/styles/animations'
 import { SnackbarType } from 'modules/snackbar'
 
 interface SnackbarProps {
-	onClick: () => void;
-	text: string;
-	type: SnackbarType;
+	onClick(): void;				// snackbar click function
+	text: string;						// snackbar message
+	type: SnackbarType;			// snackbar type
 }
-
 const Snackbar = ({ onClick, text, type }: SnackbarProps)=> {
 	return (
 	  <Container onClick={onClick} type={type}>
@@ -24,24 +22,28 @@ const Snackbar = ({ onClick, text, type }: SnackbarProps)=> {
 	);
 }
 
+interface ContainerStyled {
+	type: string;
+}
 const Container = styled.div`
 	position: relative;
 	width: 320px;
 	height: auto;
 	max-height: 800px;
-	background-color: ${ props => {
-			if (typeof props.type === SnackbarType.SUCCESS) {
-				return palette.green;
-			} else if (typeof props.type === SnackbarType.WARNING) {
-				return palette.red;
-			} else if (typeof props.type === SnackbarType.ERROR) {
-				return palette.orange;
-			} else if (typeof props.type === SnackbarType.INFO) {
+	background-color: ${(props:ContainerStyled) => {
+			if (props.type === 'SUCCESS') {	
+				return palette.teal5;
+			} else if (props.type === 'WARNING') {
+				return palette.red4;
+			} else if (props.type === 'ERROR') {
+				return palette.orange4;
+			} else if (props.type === 'INFO') {
 				return palette.gray7;
 			} else {
 				return palette.blue4;
 			}
-		}};
+		}
+	};
 	box-shadow: ${styles.boxShadow.regular};
 	border-radius: 4px;
 	animation: ${animations.fadeInBottom} .4s cubic-bezier(0.25,0.1,0.25,1),

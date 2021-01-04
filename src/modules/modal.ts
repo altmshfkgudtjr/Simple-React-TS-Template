@@ -14,7 +14,7 @@ const POP_MODAL = 'modal/POP_MODAL' as const;
 const DELETE_MODAL = 'modal/DELETE_MODAL' as const;
 const CLEAR_MODAL	= 'modal/CLEAR_MODAL' as const;
 
-export const pushModal = (id: string, elem: React.ReactNode, args: any) => ({ type: PUSH_MODAL, payload: { id, elem, args } });
+export const pushModal = (id: string, elem: React.ReactNode, args?: any) => ({ type: PUSH_MODAL, payload: { id, elem, args } });
 export const popModal = () => ({ type: POP_MODAL });
 export const deleteModal = (id: string) => ({ type: DELETE_MODAL, payload: id });
 export const clearModal = () => ({ type: CLEAR_MODAL });
@@ -32,7 +32,7 @@ export type ModalAction =
 export interface Modal {
 	id: string;
 	elem: React.ReactNode;
-	args: any;
+	args?: any;
 }
 
 export interface ModalState {

@@ -1,13 +1,12 @@
-import React from 'react'
 import styled from 'styled-components'
 // lib
 import palette from 'lib/styles/palette'
 import * as styles from 'lib/styles/styles'
 
-/*
-	ModalOff: <function> Default function, Don't remove.
-*/
-const CloseBtn = ({ ModalOff }) => {
+interface CloseBtnProps {
+	ModalOff(): void;
+}
+const CloseBtn = ({ ModalOff }: CloseBtnProps) => {
 	return <Content onClick={ModalOff}>Close Modal</Content>
 }
 

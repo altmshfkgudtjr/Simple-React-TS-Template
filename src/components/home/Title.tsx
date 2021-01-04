@@ -3,7 +3,10 @@ import styled from 'styled-components'
 // lib'
 import media from 'lib/styles/media'
 
-const Title = ({children}) => {
+interface TitleProps {
+	children: React.ReactNode;
+}
+const Title = ({ children }: TitleProps) => {
 	return <Content>{children}</Content>;
 }
 

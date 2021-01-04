@@ -3,7 +3,10 @@ import styled from 'styled-components'
 // lib
 import * as styles from 'lib/styles/styles'
 
-const Section = ({ children }) => {
+interface SectionProps {
+	children: React.ReactNode;
+}
+const Section = ({ children }: SectionProps) => {
 	return <Container>{children}</Container>
 }
 

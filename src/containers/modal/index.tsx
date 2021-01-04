@@ -1,25 +1,26 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import styled from 'styled-components'
 import { useSelector, useDispatch } from 'react-redux'
 // modules
+import { RootState } from 'modules'
 import { popModal, deleteModal } from 'modules/modal'
 // lib
 import zIndex from 'lib/styles/zIndex'
 import animations from 'lib/styles/animations'
 
-const Modal = ()=> {
+const Modal = () => {
 	const dispatch = useDispatch();
-	const modalList = useSelector(state => state.modal.modalList);
+	const modalList = useSelector((state: RootState) => state.modal.modalList);
 	const show = modalList.length !== 0;
 	
 	const PreventModalOff = e => e.stopPropagation();
 
-	const onMouseDown = (id) => {
+	const onMouseDown = (id: string) => {
 		dispatch(deleteModal(id));
 	}
 
 	const ModalList = modalList.map(modal => {
-		const Content = modal['elem'];
+		const Content:any = modal['elem'];
 		return <Content key={modal['id']}
 										PreventModalOff={PreventModalOff}
 										ModalOff={() => { onMouseDown(modal['id']) }}
@@ -27,10 +28,11 @@ const Modal = ()=> {
 	});
 
 	useEffect(() => {
+		const target = document.querySelector('body');
 		if (show) {
-			document.querySelector('body').style.overflow = 'hidden';
+			target && (function(){ target.style.overflow = 'hidden' })();
 		} else {
-			document.querySelector('body').removeAttribute('style');
+			target && target.removeAttribute('style');
 		}
 	}, [show]);
 

@@ -1,7 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const Title = ({children}) => {
+interface TitleProps {
+	children: React.ReactNode;
+}
+const Title = ({ children }: TitleProps) => {
 	return <Content>{children}</Content>
 }
 

@@ -1,12 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import styled, { css } from 'styled-components'
 // lib
 import palette from 'lib/styles/palette'
 import * as styles from 'lib/styles/styles'
 import animations from 'lib/styles/animations'
 
-const Badge = ({ onClick, title }) => {
-	const [eventOn, setEventOn] = useState(false);
+interface BadgeProps {
+	onClick(): void;
+	title: string;
+}
+const Badge = ({ onClick, title }: BadgeProps) => {
+	const [eventOn, setEventOn] = useState<boolean>(false);
 	const onClickBadge = () => {
 		onClick();
 		setEventOn(true);
@@ -19,9 +23,13 @@ const Badge = ({ onClick, title }) => {
 		}
 	}, [eventOn]);
 
-	return <Content eventOn={eventOn} onClick={onClickBadge}>{title}</Content>;
+	return <Content eventOn={eventOn} 
+									onClick={onClickBadge}>{title}</Content>;
 }
 
+interface ContentTypes {
+	eventOn: boolean;
+}
 const Content = styled.div`
 	position: relative;
 	display: inline-block;
@@ -37,7 +45,9 @@ const Content = styled.div`
 	color: #fefefe;
 	cursor: pointer;
 	${styles.noselect}
-	${props => props.eventOn && css`animation: 1s ${animations.pulse} infinite`};
+	${(props: ContentTypes) => props.eventOn && css`
+		animation: 1s ${animations.pulse} infinite
+	`};
 
 	&:hover {
 		background-color: ${palette.blue3};

@@ -4,7 +4,10 @@ import styled from 'styled-components'
 import { transition } from 'lib/styles/styles'
 import palette from 'lib/styles/palette'
 
-const Post = ({children}) => {
+interface PostProps {
+	children: React.ReactNode;
+}
+const Post = ({ children }: PostProps) => {
 	return <Content>{children}</Content>;
 }
 

@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import { useSelector, useDispatch } from 'react-redux'
 // components
@@ -7,17 +6,18 @@ import Snackbar from 'components/common/Snackbar'
 import zIndex from 'lib/styles/zIndex'
 import media from 'lib/styles/media'
 // module
+import { RootState } from 'modules'
 import { deleteSnackbar } from 'modules/snackbar'
 // types
 import { SnackbarType } from 'modules/snackbar'
 
 const SnackbarWrapper = ()=> {
 	const dispatch = useDispatch();
-	const show: boolean = useSelector(state => state.snackbar.show);
-	const text: string = useSelector(state => state.snackbar.text);
-	const type: SnackbarType = useSelector(state => state.snackbar.type);
+	const show: boolean = useSelector((state: RootState) => state.snackbar.show);
+	const text: string = useSelector((state: RootState) => state.snackbar.text);
+	const type: SnackbarType = useSelector((state: RootState) => state.snackbar.type);
 
-	const onClick = (): void => dispatch(deleteSnackbar());
+	const onClick = () => dispatch(deleteSnackbar());
 
 	return (
 		<Container>

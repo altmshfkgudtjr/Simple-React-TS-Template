@@ -8,7 +8,7 @@ const RefEvent: ReturnType<typeof setTimeout>[] = [];
 /*
 	Thunk Actions
 */
-export const newSnackbar = (text: string, type: SnackbarType): SnackbarThunk => {
+export const newSnackbar = (text: string, type?: SnackbarType): SnackbarThunk => {
 	return async dispatch => {
 		if (RefEvent.length !== 0) {
 			const event: NodeJS.Timeout | undefined = RefEvent.shift();
@@ -18,7 +18,10 @@ export const newSnackbar = (text: string, type: SnackbarType): SnackbarThunk => 
 		}
 		dispatch(deleteSnackbar());
 		await setTimeout(function() {
-			dispatch(appendSnackbar({text, type}));
+			const obj = !!type 
+								? { text, type }
+								: { text };
+			dispatch(appendSnackbar(obj));
 			const event = setTimeout(function() {
 				dispatch(deleteSnackbar());
 			}, 4000);
@@ -36,7 +39,7 @@ const DELETE_SNACKBAR = 'snackbar/DELETE_SNACKBAR' as const;
 
 export interface appendSnackbarPayload {
 	text: string;
-	type: SnackbarType;
+	type?: SnackbarType;
 }
 
 export const appendSnackbar = (data: appendSnackbarPayload) => ({ type: APPEND_SNACKBAR, payload: data });
@@ -49,12 +52,7 @@ export type SnackbarAction =
 /*
 	InitialState
 */
-export enum SnackbarType {
-	'INFO', 
-	'SUCCESS', 
-	'WARNING', 
-	'ERROR'
-}
+export type SnackbarType = 'INFO' |'SUCCESS' |'WARNING' |'ERROR';
 
 export interface SnackbarState {
 	show: boolean;
@@ -65,7 +63,7 @@ export interface SnackbarState {
 const initialState: SnackbarState = {
 	show: false,
 	text: '',
-	type: SnackbarType.INFO
+	type: 'INFO'
 };
 
 
@@ -76,24 +74,24 @@ export default function snackbar(
 	state: SnackbarState = initialState, 
 	action: SnackbarAction
 ): SnackbarState {
-
 	switch(action.type) {
 		case APPEND_SNACKBAR:
 			return produce(state, draft => {
 				draft.show = true;
 				draft.text = action.payload['text'];
-				draft.type = action.payload['type'];
+				if (!!action.payload['type']) {
+					draft.type = action.payload['type'];
+				}
 			});
 
 		case DELETE_SNACKBAR:
 			return produce(state, draft => {
 				draft.show = false;
 				draft.text = '';
-				draft.type = SnackbarType.INFO;
+				draft.type = 'INFO';
 			});
 			
 		default:
 			return state;
 	}
-
 }

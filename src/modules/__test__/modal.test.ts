@@ -1,4 +1,3 @@
-import React from 'react'
 import reducer, * as actions from 'modules/modal'
 
 describe('modal', () => {
@@ -30,7 +29,7 @@ describe('modal', () => {
 		});
 
 		it('should push a modal.', () => {
-			const elem = <div id="test-div" />;
+			const elem = null;
 			const args = {'key': 'value'};
 			state = reducer(state, actions.pushModal('TEST', elem, args));
 			expect(state.modalList[0]['id']).toBe('TEST');
@@ -39,7 +38,7 @@ describe('modal', () => {
 		});
 
 		it('should pop a modal.', () => {
-			const elem = <div id="test-div" />;
+			const elem = null;
 			const args = {'key': 'value'};
 			state = reducer(state, actions.pushModal('TEST', elem, args));
 			
@@ -48,7 +47,7 @@ describe('modal', () => {
 		});
 
 		it('should delete the modal.', () => {
-			const elem = <div id="test-div" />;
+			const elem = null;
 			const args = {'key': 'value'};
 			state = reducer(state, actions.pushModal('TEST_1', elem, args));
 			state = reducer(state, actions.pushModal('TEST_2', elem, args));

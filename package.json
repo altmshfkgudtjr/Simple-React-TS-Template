@@ -23,7 +23,7 @@
     "start": "env-cmd -f .env react-scripts start",
     "prebuild": "react-scripts test --watchAll=false",
     "build": "cross-env GENERATE_SOURCEMAP=false env-cmd -f .env react-scripts build",
-    "postbuild": "cp -r build/* ../NANOBOOK/NANOBOOK/app/client",
+    "postbuild": "cp -r build/* ../backend/app/client",
     "test": "react-scripts test"
   },
   "eslintConfig": {
