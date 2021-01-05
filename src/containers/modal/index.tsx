@@ -1,16 +1,16 @@
-import { useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import styled from 'styled-components'
-import { useSelector, useDispatch } from 'react-redux'
 // modules
-import { RootState } from 'modules'
-import { popModal, deleteModal } from 'modules/modal'
+import { modalContext } from 'modules/contexts/modal'
+import { popModal, deleteModal } from 'modules/actions/modal'
 // lib
 import zIndex from 'lib/styles/zIndex'
 import animations from 'lib/styles/animations'
 
 const Modal = () => {
-	const dispatch = useDispatch();
-	const modalList = useSelector((state: RootState) => state.modal.modalList);
+	const modal = useContext(modalContext);
+	const dispatch = modal.dispatch;
+	const modalList = modal.state.modalList;
 	const show = modalList.length !== 0;
 	
 	const PreventModalOff = e => e.stopPropagation();
@@ -23,7 +23,7 @@ const Modal = () => {
 		const Content:any = modal['elem'];
 		return <Content key={modal['id']}
 										PreventModalOff={PreventModalOff}
-										ModalOff={() => { onMouseDown(modal['id']) }}
+										ModalOff={() => onMouseDown(modal['id'])}
 										args={modal['args']} />;
 	});
 
@@ -38,7 +38,7 @@ const Modal = () => {
 
 	return (
 		<>
-			{show && <ModalBackground onMouseDown={() => { dispatch(popModal()) }}>
+			{show && <ModalBackground onMouseDown={() => dispatch(popModal())}>
 				{ModalList}
 			</ModalBackground>}
 		</>

@@ -5,7 +5,7 @@ import media from 'lib/styles/media'
 import palette from 'lib/styles/palette'
 import animations from 'lib/styles/animations'
 // types
-import { SnackbarType } from 'modules/snackbar'
+import { SnackbarType } from 'modules/states/snackbar'
 
 interface SnackbarProps {
 	onClick(): void;				// snackbar click function

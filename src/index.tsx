@@ -3,15 +3,14 @@ import ReactDOM from 'react-dom'
 import App from 'App'
 import * as serviceWorker from './serviceWorker'
 import { BrowserRouter } from 'react-router-dom'
-import { Provider } from 'react-redux'
 import { HelmetProvider } from "react-helmet-async"
-// Store
-import store from 'modules'
+// provider
+import Provider from 'modules/index'
 
 ReactDOM.render(
 	<StrictMode>
 		<BrowserRouter>
-			<Provider store={store}>
+			<Provider>
 				<HelmetProvider>
 					<App />
 				</HelmetProvider>

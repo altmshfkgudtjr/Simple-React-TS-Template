@@ -1,27 +1,25 @@
+import { useContext } from 'react'
 import styled from 'styled-components'
-import { useSelector, useDispatch } from 'react-redux'
 // components
 import Snackbar from 'components/common/Snackbar'
 // lib
 import zIndex from 'lib/styles/zIndex'
 import media from 'lib/styles/media'
 // module
-import { RootState } from 'modules'
-import { deleteSnackbar } from 'modules/snackbar'
-// types
-import { SnackbarType } from 'modules/snackbar'
+import { snackbarContext } from 'modules/contexts/snackbar'
+import { deleteSnackbar } from 'modules/actions/snackbar'
 
 const SnackbarWrapper = ()=> {
-	const dispatch = useDispatch();
-	const show: boolean = useSelector((state: RootState) => state.snackbar.show);
-	const text: string = useSelector((state: RootState) => state.snackbar.text);
-	const type: SnackbarType = useSelector((state: RootState) => state.snackbar.type);
-
+	const snackbar = useContext(snackbarContext);
+	const dispatch = snackbar.dispatch;
+	
 	const onClick = () => dispatch(deleteSnackbar());
 
 	return (
 		<Container>
-			{show && <Snackbar onClick={onClick} text={text} type={type}></Snackbar>}
+			{snackbar.state.text !== '' && <Snackbar onClick={onClick} 
+																							 text={snackbar.state.text} 
+																							 type={snackbar.state.type} />}
 		</Container>
 	);
 }
