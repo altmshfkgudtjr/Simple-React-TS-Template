@@ -1,16 +1,18 @@
-import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 // containers
 import InfoModal from 'containers/modal/Info'
+import { useContext } from 'react'
 // modules
-import { pushModal } from 'modules/modal'
+import { modalContext } from 'modules/contexts/modal'
+import { pushModal } from 'modules/actions/modal'
 // lib
 import { transition } from 'lib/styles/styles'
 import palette from 'lib/styles/palette'
 
 const Btn = () => {
-	const dispatch = useDispatch();
-
+	const modal = useContext(modalContext);
+	const dispatch = modal.dispatch;
+	
 	const modalOn = () => dispatch(
 		pushModal('INFO', InfoModal, {title: "Simple"})
 	);

@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux'
+import { useContext } from 'react'
 import styled from 'styled-components'
 // components
 import Title from 'components/modal/info/Title'
@@ -9,16 +9,18 @@ import media from 'lib/styles/media'
 import * as styles from 'lib/styles/styles'
 import animations from 'lib/styles/animations'
 // modules
-import { newSnackbar } from 'modules/snackbar'
+import { snackbarContext } from 'modules/contexts/snackbar'
+import { newSnackbar } from 'modules/actions/snackbar'
 
 interface InfoModalProps {
-	PreventModalOff(): void;		// Default function, Don't remove.
-	ModalOff(): void;												// Default function, Don't remove.
-	args?: any;															// Arguments
+	PreventModalOff(): void;			// Default function, Don't remove.
+	ModalOff(): void;							// Default function, Don't remove.
+	args?: any;										// Arguments
 }
 const InfoModal = ({ PreventModalOff, ModalOff, args }: InfoModalProps) => {
-	const dispatch = useDispatch();
-	const onClickBadge = () => dispatch(newSnackbar('Simple is best.'));
+	const snackbar = useContext(snackbarContext);
+	const dispatch = snackbar.dispatch;
+	const onClickBadge = () => newSnackbar(dispatch, 'Simple is best.');
 
 	return (
 	  <Container onMouseDown={PreventModalOff}>

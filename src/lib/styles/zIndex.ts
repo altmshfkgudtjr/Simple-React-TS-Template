@@ -4,8 +4,8 @@ export const zIndexSet = (layer: number): string => `
 
 const zIndex = {
 	modal: zIndexSet(100),
-	tooltip: zIndexSet(500),
 	snackbar: zIndexSet(400),
+	tooltip: zIndexSet(500)
 };
 
 export default zIndex;

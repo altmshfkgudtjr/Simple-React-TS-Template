@@ -59,6 +59,7 @@ const pulse = keyframes`
 	70% { box-shadow: 0 0 0 10px rgba(0, 123, 255, 0); }
 	100% { box-shadow: 0 0 0 0 rgba(0, 123, 255, 0); }
 `;
+
 const animations = {
 	fadeIn,
 	fadeOut,
