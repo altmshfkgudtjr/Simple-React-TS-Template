@@ -18,9 +18,8 @@ interface InfoModalProps {
 	args?: any;										// Arguments
 }
 const InfoModal = ({ PreventModalOff, ModalOff, args }: InfoModalProps) => {
-	const snackbar = useContext(snackbarContext);
-	const dispatch = snackbar.dispatch;
-	const onClickBadge = () => newSnackbar(dispatch, 'Simple is best.');
+	const { dispatch: snackbarDispatch } = useContext(snackbarContext);
+	const onClickBadge = () => newSnackbar(snackbarDispatch, 'Simple is best.');
 
 	return (
 	  <Container onMouseDown={PreventModalOff}>

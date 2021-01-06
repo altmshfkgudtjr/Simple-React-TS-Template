@@ -1,4 +1,5 @@
-import reducer, * as actions from 'modules/modal'
+import * as actions from 'modules/actions/modal'
+import { reducer } from 'modules/contexts/modal'
 
 describe('modal', () => {
 	let state = reducer(undefined, {});

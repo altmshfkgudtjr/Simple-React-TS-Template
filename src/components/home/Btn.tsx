@@ -10,10 +10,9 @@ import { transition } from 'lib/styles/styles'
 import palette from 'lib/styles/palette'
 
 const Btn = () => {
-	const modal = useContext(modalContext);
-	const dispatch = modal.dispatch;
+	const { dispatch: modalDispatch } = useContext(modalContext);
 	
-	const modalOn = () => dispatch(
+	const modalOn = () => modalDispatch(
 		pushModal('INFO', InfoModal, {title: "Simple"})
 	);
 

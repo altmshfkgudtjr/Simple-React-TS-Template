@@ -1,12 +1,8 @@
+import { Modal } from 'types/modules/modal'
+
 /*
 	Initial State
 */
-export interface Modal {
-	id: string;
-	elem: React.ReactNode;
-	args?: any;
-}
-
 export interface ModalState {
 	modalList: Modal[];
 }

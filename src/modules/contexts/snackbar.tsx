@@ -9,9 +9,9 @@ import * as actions from 'modules/actions/snackbar'
 /*
 	Reducer
 */
-const reducer = (
+export const reducer = (
 	state: SnackbarState = initialState, 
-	action: actions.SnackbarAction
+	action: actions.ActionType
 ): SnackbarState => {
 	switch(action.type) {
 		case actions.APPEND_SNACKBAR:

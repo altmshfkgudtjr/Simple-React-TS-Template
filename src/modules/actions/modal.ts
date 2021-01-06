@@ -11,7 +11,7 @@ export const popModal = () => ({ type: POP_MODAL });
 export const deleteModal = (id: string) => ({ type: DELETE_MODAL, payload: id });
 export const clearModal = () => ({ type: CLEAR_MODAL });
 
-export type ModalAction = 
+export type ActionType = 
 	| ReturnType<typeof pushModal>
 	| ReturnType<typeof popModal>
 	| ReturnType<typeof deleteModal>

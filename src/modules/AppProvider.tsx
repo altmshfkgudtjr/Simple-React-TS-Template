@@ -15,7 +15,7 @@ const CombinedProvider = ({ contexts, children }) => contexts.reduce(
 /*
 	Create Provider
 */
-const Provider = ({ children }) => {
+const AppProvider = ({ children }) => {
 	return (
 		<CombinedProvider contexts={[
 			ModalProvider, 
@@ -26,4 +26,4 @@ const Provider = ({ children }) => {
 	);
 }
 
-export default Provider
+export default AppProvider

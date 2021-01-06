@@ -5,16 +5,16 @@ import * as serviceWorker from './serviceWorker'
 import { BrowserRouter } from 'react-router-dom'
 import { HelmetProvider } from "react-helmet-async"
 // provider
-import Provider from 'modules/index'
+import AppProvider from 'modules/AppProvider'
 
 ReactDOM.render(
 	<StrictMode>
 		<BrowserRouter>
-			<Provider>
+			<AppProvider>
 				<HelmetProvider>
 					<App />
 				</HelmetProvider>
-			</Provider>
+			</AppProvider>
 		</BrowserRouter>
 	</StrictMode>, 
 	document.getElementById('root')

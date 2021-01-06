@@ -1,5 +1,7 @@
+import { SnackbarType } from 'types/modules/snackbar'
+
 /*
-	Thunk
+	Thunks
 */
 const RefEvent = [];
 
@@ -25,16 +27,22 @@ export const newSnackbar = async (dispatch: any, text: string, type: SnackbarTyp
 export const APPEND_SNACKBAR = 'snackbar/APPEND_SNACKBAR' as const;
 export const DELETE_SNACKBAR = 'snackbar/DELETE_SNACKBAR' as const;
 
-export type SnackbarType = 'INFO' |'SUCCESS' |'WARNING' |'ERROR';
 
-export interface appendSnackbarPayload {
+/*
+	Action Types
+*/
+export interface AppendSnackbarPayload {
 	text: string;
 	type?: SnackbarType;
 }
 
-export const appendSnackbar = (data: appendSnackbarPayload) => ({ type: APPEND_SNACKBAR, payload: data });
+
+/*
+	Actions Constructors
+*/
+export const appendSnackbar = (data: AppendSnackbarPayload) => ({ type: APPEND_SNACKBAR, payload: data });
 export const deleteSnackbar = () => ({ type: DELETE_SNACKBAR});
 
-export type SnackbarAction = 
+export type ActionType = 
 	| ReturnType<typeof appendSnackbar>
 	| ReturnType<typeof deleteSnackbar>

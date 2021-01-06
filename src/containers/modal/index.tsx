@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import styled from 'styled-components'
 // modules
 import { modalContext } from 'modules/contexts/modal'
@@ -8,9 +8,8 @@ import zIndex from 'lib/styles/zIndex'
 import animations from 'lib/styles/animations'
 
 const Modal = () => {
-	const modal = useContext(modalContext);
-	const dispatch = modal.dispatch;
-	const modalList = modal.state.modalList;
+	const { state: modalState, dispatch } = useContext(modalContext);
+	const modalList = modalState.modalList;
 	const show = modalList.length !== 0;
 	
 	const PreventModalOff = e => e.stopPropagation();
