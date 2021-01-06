@@ -10,16 +10,18 @@ import { snackbarContext } from 'modules/contexts/snackbar'
 import { deleteSnackbar } from 'modules/actions/snackbar'
 
 const SnackbarWrapper = ()=> {
-	const snackbar = useContext(snackbarContext);
-	const dispatch = snackbar.dispatch;
+	const { 
+		state: snackbarState, 
+		dispatch: snackbarDispatch 
+	} = useContext(snackbarContext);
 	
-	const onClick = () => dispatch(deleteSnackbar());
+	const onClick = () => snackbarDispatch(deleteSnackbar());
 
 	return (
 		<Container>
-			{snackbar.state.text !== '' && <Snackbar onClick={onClick} 
-																							 text={snackbar.state.text} 
-																							 type={snackbar.state.type} />}
+			{snackbarState.text !== '' && <Snackbar onClick={onClick} 
+																							text={snackbarState.text} 
+																							type={snackbarState.type} />}
 		</Container>
 	);
 }

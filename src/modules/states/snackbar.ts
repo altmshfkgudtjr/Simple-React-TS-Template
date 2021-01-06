@@ -1,8 +1,8 @@
+import { SnackbarType } from 'types/modules/snackbar'
+
 /*
 	InitialState
 */
-export type SnackbarType = 'INFO' |'SUCCESS' |'WARNING' |'ERROR';
-
 export interface SnackbarState {
 	text: string;
 	type: SnackbarType;

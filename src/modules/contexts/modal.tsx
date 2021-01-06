@@ -9,9 +9,9 @@ import * as actions from 'modules/actions/modal'
 /*
 	Reducer
 */
-const reducer = (
+export const reducer = (
 	state: ModalState = initialState, 
-	action: actions.ModalAction
+	action: actions.ActionType
 ): ModalState => {
 	switch(action.type) {
 		case actions.PUSH_MODAL:

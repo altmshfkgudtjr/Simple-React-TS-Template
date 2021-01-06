@@ -11,6 +11,7 @@ interface BadgeProps {
 }
 const Badge = ({ onClick, title }: BadgeProps) => {
 	const [eventOn, setEventOn] = useState<boolean>(false);
+	
 	const onClickBadge = () => {
 		onClick();
 		setEventOn(true);
