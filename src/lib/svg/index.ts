@@ -1,1 +1,1 @@
-// export { ReactComponent as Svg_name } from './<svg_name>.svg';
+export { ReactComponent as MenuIcon } from './menu.svg';
