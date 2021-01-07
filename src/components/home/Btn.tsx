@@ -1,7 +1,7 @@
+import { useContext } from 'react'
 import styled from 'styled-components'
 // containers
 import InfoModal from 'containers/modal/Info'
-import { useContext } from 'react'
 // modules
 import { modalContext } from 'modules/contexts/modal'
 import { pushModal } from 'modules/actions/modal'

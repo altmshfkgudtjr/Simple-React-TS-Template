@@ -1,0 +1,1 @@
+// export { ReactComponent as Svg_name } from './<svg_name>.svg';

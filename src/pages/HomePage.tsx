@@ -12,8 +12,8 @@ const HomePage = () => {
 		</Helmet>
 
 		<Section>
-			<Title>Hello React</Title>
-			<Post>This is simple <strong>React</strong> template!</Post>
+			<Title>Hello React-TS</Title>
+			<Post>This is simple <strong>React Typescript</strong> template!</Post>
 			<Post>Create new your app using this template.</Post>
 			<Post>If you want to check the refernece? Click this <a href="https://github.com/altmshfkgudtjr/Simple-React-TS-Template/blob/master/README.md">README.md</a> file.</Post>
 			<Btn />

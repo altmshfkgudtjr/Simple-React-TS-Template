@@ -5,7 +5,7 @@ import * as serviceWorker from './serviceWorker'
 import { BrowserRouter } from 'react-router-dom'
 import { HelmetProvider } from "react-helmet-async"
 // provider
-import AppProvider from 'modules/AppProvider'
+import AppProvider from 'modules'
 
 ReactDOM.render(
 	<StrictMode>
