@@ -12,7 +12,7 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "noImplicitAny": false,
-    "strictNullChecks": false,
+    "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "module": "esnext",
@@ -23,8 +23,8 @@
     "jsx": "react-jsx",
     "sourceMap": false,
     "typeRoots": [
-      "./lib/@types",
-      "./node_modules/@types"
+      "./node_modules/@types",
+      "./@types"
     ],
     "baseUrl": "src"
   },

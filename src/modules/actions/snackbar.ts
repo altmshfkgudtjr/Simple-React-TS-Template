@@ -3,17 +3,17 @@ import { SnackbarType } from 'types/modules/snackbar'
 /*
 	Thunks
 */
-const RefEvent = [];
+const RefEvent: number[] = [];
 
 export const newSnackbar = async (dispatch: any, text: string, type: SnackbarType = 'INFO') => {
 	if(RefEvent.length !== 0) {
-		let event = RefEvent.shift();
+		const event = RefEvent.shift();
 		clearTimeout(event);
 	}
 	dispatch(deleteSnackbar());
-	await setTimeout(function() {
+	await window.setTimeout(function() {
 		dispatch(appendSnackbar({text, type}));
-		let event = setTimeout(function() {
+		const event = window.setTimeout(function() {
 			dispatch(deleteSnackbar());
 		}, 4000);
 		RefEvent.push(event);
@@ -22,16 +22,16 @@ export const newSnackbar = async (dispatch: any, text: string, type: SnackbarTyp
 
 
 /*
-	Actions
+	Actions Types
 */
 export const APPEND_SNACKBAR = 'snackbar/APPEND_SNACKBAR' as const;
 export const DELETE_SNACKBAR = 'snackbar/DELETE_SNACKBAR' as const;
 
 
 /*
-	Action Types
+	Action Payload Types
 */
-export interface AppendSnackbarPayload {
+export interface IAppendSnackbar {
 	text: string;
 	type?: SnackbarType;
 }
@@ -40,7 +40,7 @@ export interface AppendSnackbarPayload {
 /*
 	Actions Constructors
 */
-export const appendSnackbar = (data: AppendSnackbarPayload) => ({ type: APPEND_SNACKBAR, payload: data });
+export const appendSnackbar = (data: IAppendSnackbar) => ({ type: APPEND_SNACKBAR, payload: data });
 export const deleteSnackbar = () => ({ type: DELETE_SNACKBAR});
 
 export type ActionType = 
