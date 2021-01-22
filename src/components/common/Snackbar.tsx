@@ -38,9 +38,9 @@ const Container = styled.div`
 			} else if (props.type === 'ERROR') {
 				return palette.orange4;
 			} else if (props.type === 'INFO') {
-				return palette.gray7;
-			} else {
 				return palette.blue4;
+			} else {
+				return palette.gray4;
 			}
 		}
 	};
@@ -83,7 +83,7 @@ const Message = styled.div`
 	flex-grow: 1;
 	color: white;
 	font-size: 14px;
-	font-weight: 200;
+	font-weight: 400;
 	white-space: pre-wrap;
 	word-break: keep-all;
 	vertical-align: top;

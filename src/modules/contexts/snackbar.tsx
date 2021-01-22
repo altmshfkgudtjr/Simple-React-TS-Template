@@ -1,4 +1,4 @@
-import React, { createContext, useReducer } from 'react'
+import React, { createContext, useReducer, Dispatch } from 'react'
 import { produce } from 'immer'
 // modules
 import initialState from 'modules/states/snackbar'
@@ -37,9 +37,12 @@ export const reducer = (
 /*
 	Context
 */
-export const snackbarContext = createContext<any | null>(null);
+export const snackbarContext = createContext<{
+  state: SnackbarState;
+  dispatch: Dispatch<actions.ActionType>;
+}>({ state: initialState, dispatch: () => null });
 
-const SnackbarProvider = ({ children }) => {
+const Provider = ({ children }) => {
 	const [state, dispatch] = useReducer(reducer, initialState);
 	const value = { state, dispatch };
 
@@ -50,4 +53,4 @@ const SnackbarProvider = ({ children }) => {
 	);
 }
 
-export default SnackbarProvider
+export default Provider
