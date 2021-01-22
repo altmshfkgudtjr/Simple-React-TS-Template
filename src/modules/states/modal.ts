@@ -1,10 +1,10 @@
-import { IModal } from 'types/modules/modal'
+import { Modal } from 'types/modules/modal'
 
 /*
 	Initial State
 */
 export interface ModalState {
-	modalList: IModal[];
+	modalList: Modal[];
 }
 
 const initialState: ModalState = {
