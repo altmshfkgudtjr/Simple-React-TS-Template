@@ -122,7 +122,7 @@ Simple-React-Ts-Template
   "postbuild": "cp -r build/* ../backend/src/client"
   ```
 
-  이 외에도 proxy를 설정하여 개발을 진행할 때, 개발 서버를 대상을 API를 호출할 수 있습니다.
+  이 외에도 proxy를 설정하여 개발을 진행할 때, 개발 서버를 대상을 API를 호출할 수 있습니다. 기본적으로 `http://loclhost:5000`으로 설정되어 있습니다.
 
   ```json
   "proxy": "http://localhost:5000"
@@ -331,27 +331,43 @@ export default Btn
 
 ## Default Fetch file
 
-기본적으로 비동기 통신을 위해서 [fetch API](https://developer.mozilla.org/ko/docs/Web/API/Fetch_API)가 사용됩니다. 해당 파일에서는 API를 쉽게 사용할 수 있도록 작성되었습니다. (본 파일 사용유무는 선택사항입니다. 사용하지 않으면 지워주시길 바랍니다.)
+기본적으로 비동기 통신을 위해서 [fetch API](https://developer.mozilla.org/ko/docs/Web/API/Fetch_API)가 사용됩니다. 해당 파일에서는 CRUD를 만족하는 API를 쉽게 사용할 수 있도록 작성되었습니다. (본 파일 사용유무는 선택사항입니다. 사용하지 않으면 지워주시길 바랍니다.)
 
 ```typescript
-const Fetch = <T>(
-	url: string, 
-	method: string, 
-	sendData?: any, 
-	callback?: (res: any) => void, 
-	failed?: (res: any) => void
-): Promise<T> => { ... };
+const Fetch = <T extends object | FormData>(
+	url: string,
+	method: HttpMethod,
+	sendData?: T,
+	callback?: (res: FetchResult) => void,
+	failed?: (res: FetchResult) => void
+): Promise<FetchResult> => { ... };
 ```
 
 기본적으로 해당 모듈은 다음과 같은 인자를 필요로 합니다.
 
 - **url**: Target url입니다. 예시) `/board/1/post/3`
-- **method** : HTTP 요청 메서드를 인자로 받습니다. 통신 메소드명은 대문자, 소문자 상관없습니다. `POST`, `GET`, `DELETE`, `PUT`, `PATCH` 등이 존재합니다.
+
+- **method** : 기본적으로 API는 REST API 메소드를 준수하여 타입을 지정하였습니다. 만약 다른 메소드를 사용할 경우, 해당 타입을 수정할 수 있습니다. `POST`, `GET`, `DELETE`, `PUT`, `PATCH` 등이 존재합니다.
+
+  ```typescript
+  // REST API Method
+  type HttpMethod = 'POST' | 'GET' | 'PUT' | 'DELETE' | 'PATCH';
+  ```
+
 - **sendData** : HTTP 요청을 할 때, 필요한 data입니다. 기본적으로 *json/application*으로 보내지며, sendData는 JSON화 되어서 통신이 진행됩니다. *FormData* 타입도 지원합니다.
+
 - **callback** : 통신이 완료된 후에 실행될 콜백함수입니다. 선택사항입니다.
+
 - **failed** : 4xx 또는 5xx 에러(대표적으로 404, 502)가 발생할 경우, 실행될 함수입니다. 선택사항입니다.
 
-**headers**값의 Accept 속성에 'application/json' 을 적용하여, 서버로부터 각 API별 json 메세지를 확인할 수 있도록 하였습니다.
+**headers**값의 Accept 속성에 'application/json' 을 적용하여, 서버로부터 각 API별 json 메세지를 확인할 수 있도록 하였습니다. 또한, server으로부터 받는 반환값에 대한 규약이 존재할 경우 `FetchResult` 타입을 아래와 같이 지정할 수 있습니다. 기본값은 any 타입입니다.
+
+```typescript
+// API Ruturn type
+type FetchResult = any;
+```
+
+
 
 해당 모듈은 **Promise** 객체를 반환합니다. 아래와 같이 사용 가능합니다.
 
@@ -364,7 +380,7 @@ Promise.all([
   Fetch('/api/third', 'POST', {'key': 'value'})
 ]);
 
-// or (Using Promise)
+// or (Using Promise .then/.catch)
 
 Fetch('/api/first', 'GET')
 .then(data => {
@@ -383,6 +399,14 @@ Fetch('/api/first', 'POST', {'key': 'value'},
 (err) => {
   console.log(err);
 });
+
+Fetch('/api/first', 'POST', {'key': 'value'}, 
+function(data) {
+  console.log(data);
+},
+function(err) {
+  console.log(err);
+};
 ```
 
 
@@ -396,17 +420,20 @@ Fetch('/api/first', 'POST', {'key': 'value'},
 ```typescript
 // fetch.js
 
-const Fetch = <T>(
-	url: string, 
-	method: string, 
-	sendData?: any, 
-	callback?: (res: any) => void, 
-	failed?: (res: any) => void
-): Promise<T> => {
+...
+
+const Fetch = <T extends object | FormData>(
+	url: string,
+	method: HttpMethod,
+	sendData?: T,
+	callback?: (res: FetchResult) => void,
+	failed?: (res: FetchResult) => void
+): Promise<FetchResult> => {
 
     ...
     
     /* JWT Auto Authroization using WebStorage */
+    /* If you do not use the webStorage method and use the cookie method, please modify this part. */
 	  const token = localStorage.getItem('tk'); // or sessionStorage
 	  let authorization;
 
