@@ -9,8 +9,9 @@ export const userInfo = () => {
 		.then(res => {
 			if (res.success) {
 				return res.result;
-			} else {
-				return Promise.reject(res.res);
 			}
+		})
+		.catch(err => {
+			return Promise.reject(err.message);
 		})
 }
