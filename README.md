@@ -6,7 +6,7 @@
 
 - **CSS in JS** : styled-components를 사용하여 간편하게 컴포넌트 별로 스타일을 적용할 수 있습니다.
 
-- **Hook**: 상태관리를 하기위해서 *useContext*와 *userReducer*을 사용합니다.
+- **Hook**: 상태관리를 하기위해서 *Context API* 와 *useReducer* 을 함께 사용합니다.
 - **Build**: `yarn build`를 통해서 작성한 코드들을 production mode로 빌드할 수 있습니다. 본 템플릿에서는 다음과 같은 과정을 빌드가 진행됩니다.
   - **Pre Build** : 작성한 모든 test파일들을 진행합니다. 이 때, 통과하지 못한 파일이 존재하면 빌드과정이 진행되지 않습니다.
   - **Build** : Sourcemap 파일을 제외한 빌드를 진행합니다.
@@ -384,6 +384,44 @@ Fetch('/api/first', 'POST', {'key': 'value'},
   console.log(err);
 });
 ```
+
+
+
+
+
+## Default Authorization (JWT)
+
+기본적으로 JWT Token을 받는다의 가정하에 작성되었습니다. Token을 보내는 곳은 [fetch.js](https://github.com/altmshfkgudtjr/Simple-React-Template/blob/master/src/controllers/fetch.js) 파일에서 상단에 WebStorage에서 token을 가져오게 됩니다. 이 방식을 사용하려면 Client에서 받는 모든 스크립트 등 해킹에 사용될 수 있는 코딩에 사용되는 입력 및 출력 값에 대해서 검증하고 무효화시켜야 합니다. 만약 그럼에도 XSS 공격에 대해서 원천 차단하기 위해서는 WebStorage에는 민감한 정보를 저장하지 않는 것이 좋습니다. 대안으로 `HttpOnly` 와 `Secure` 속성을 적용시킨 Cookie를 사용하는 것이 있습니다. 만약 Cookie 방식으로 Authorization을 진행한다면 위 `fetch.js` 파일에서 WebStorage와 관련된 코드를 수정하면 됩니다.
+
+```typescript
+// fetch.js
+
+const Fetch = <T>(
+	url: string, 
+	method: string, 
+	sendData?: any, 
+	callback?: (res: any) => void, 
+	failed?: (res: any) => void
+): Promise<T> => {
+
+    ...
+    
+    /* JWT Auto Authroization using WebStorage */
+	  const token = localStorage.getItem('tk'); // or sessionStorage
+	  let authorization;
+
+    if (token === null || token === undefined || token === 'undefined') {
+		    authorization = {};
+    } else {
+		    authorization = {'Authorization': "Bearer " + token};
+	  }
+    
+    ...
+
+}
+```
+
+
 
 
 
