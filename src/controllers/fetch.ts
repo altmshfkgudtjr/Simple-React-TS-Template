@@ -1,20 +1,29 @@
 // API Ruturn type
-type FetchResult = any;
+type FetchResult<T> = {
+	verify: boolean,
+	message: string,
+	data: T
+};
+
+// API Error type
+type FetchError = {
+	statusCode: number,
+	response: any
+};
 
 // REST API Method
 type HttpMethod = 'POST' | 'GET' | 'PUT' | 'DELETE' | 'PATCH';
 
-const Fetch = <T extends object | FormData>(
+const Fetch = <T = any, U = object | FormData>(
 	url: string,
 	method: HttpMethod,
-	sendData?: T,
-	callback?: (res: FetchResult) => void,
-	failed?: (res: FetchResult) => void
-): Promise<FetchResult> => {
+	sendData?: U,
+	callback?: (res: FetchResult<T>) => void,
+	failed?: (res: FetchError) => void
+): Promise<FetchResult<T>> => {
 	/* JWT Auto Authroization using WebStorage */
-	/* If you do not use the webStorage method and use the cookie method, please modify this part. */
+	/* If you do not use the webStorage method and use the cookie, please modify this part. */
 	const token = localStorage.getItem('tk');
-	// const token = sessionStorage.getItem('tk');
 	let authorization;
 	if (token === null || token === undefined || token === 'undefined') {
 		authorization = {};
@@ -27,7 +36,7 @@ const Fetch = <T extends object | FormData>(
 		? true
 		: false;
 
-	let request: any = undefined;
+	let request: object = {};
 	if (method === 'GET') {
 		request = {
 			method: 'GET',
@@ -35,7 +44,7 @@ const Fetch = <T extends object | FormData>(
 		};
 	} else {
 		request = {
-			method: method,
+			method,
 			headers: isFormData
 				? {}
 				: Object.assign(authorization, {
@@ -54,10 +63,16 @@ const Fetch = <T extends object | FormData>(
 			switch (Math.floor(res.status / 100)) {
 				case 4:
 					// some code
-					return Promise.reject(res.json());
+					return Promise.reject({
+						statusCode: res.status,
+						response: res.json()
+					});
 				case 5:
 					// some code
-					return Promise.reject(res.json());
+					return Promise.reject({
+						statusCode: res.status,
+						response: res.json()
+					});
 				default:
 					break;
 			}
@@ -71,14 +86,19 @@ const Fetch = <T extends object | FormData>(
 
 			return res;
 		})
-		.catch(err => {
+		.catch(async (err) => {
+			let result: FetchError = await err.response;
+			result = {
+				...err,
+				response: result
+			};
 			if (typeof (failed) === 'function') {
-				failed(err);
+				failed(result);
 			}
 
-			return Promise.reject(err);
+			return Promise.reject(result);
 			/* or use the method below. */
-			// return err;
+			// return result;
 		});
 }
 
