@@ -334,13 +334,13 @@ export default Btn
 기본적으로 비동기 통신을 위해서 [fetch API](https://developer.mozilla.org/ko/docs/Web/API/Fetch_API)가 사용됩니다. 해당 파일에서는 CRUD를 만족하는 API를 쉽게 사용할 수 있도록 작성되었습니다. (본 파일 사용유무는 선택사항입니다. 사용하지 않으면 지워주시길 바랍니다.)
 
 ```typescript
-const Fetch = <T extends object | FormData>(
+const Fetch = <T = any, U = object | FormData>(
 	url: string,
 	method: HttpMethod,
-	sendData?: T,
-	callback?: (res: FetchResult) => void,
-	failed?: (res: FetchResult) => void
-): Promise<FetchResult> => { ... };
+	sendData?: U,
+	callback?: (res: FetchResult<T>) => void,
+	failed?: (res: FetchError) => void
+): Promise<FetchResult<T>> => { ... };
 ```
 
 기본적으로 해당 모듈은 다음과 같은 인자를 필요로 합니다.
@@ -360,14 +360,36 @@ const Fetch = <T extends object | FormData>(
 
 - **failed** : 4xx 또는 5xx 에러(대표적으로 404, 502)가 발생할 경우, 실행될 함수입니다. 선택사항입니다.
 
-**headers**값의 Accept 속성에 'application/json' 을 적용하여, 서버로부터 각 API별 json 메세지를 확인할 수 있도록 하였습니다. 또한, server으로부터 받는 반환값에 대한 규약이 존재할 경우 `FetchResult` 타입을 아래와 같이 지정할 수 있습니다. 기본값은 any 타입입니다.
+**headers**값의 Accept 속성에 'application/json' 을 적용하여, 서버로부터 각 API별 json 메세지를 확인할 수 있도록 하였습니다. 또한, server으로부터 받는 반환값에 대한 규약이 존재할 경우 `FetchResult` 타입을 아래와 같이 지정할 수 있습니다. 기본값은 다음과 같습니다.
 
 ```typescript
 // API Ruturn type
-type FetchResult = any;
+type FetchResult<T> = {
+	verify: boolean,
+	message: string,
+	data: T
+};
 ```
 
+비동기 통신으로 받은 데이터의 타입을 **Fetch**를 실행할 때, 정의할 수 있습니다. 다음과 같이 정의가 가능합니다.
 
+```typescript
+Fetch<{name: string, birth: number}>('/api/auth/user', 'GET')
+```
+
+Generic 타입을 정의 여부의 차이는 다음과 같이 반환받은 비동기 데이터에 대해서 타입 추론이 가능하게 됩니다. 만약 선언하지 않는다면 기본적으로 `any` 타입으로 추론됩니다.
+
+![Fetch](https://user-images.githubusercontent.com/47492535/106996451-5f984e00-67c4-11eb-97a5-aa988bf17b06.gif)
+
+기본적으로 HTTP Status Code가 4XX, 5XX 에서 발생하게 된다면 Error 타입을 반환하게 됩니다. 에러타입은 아래 타입과 같습니다. 이를 통해서 API 개별적으로 상태에 대한 에러 핸들러를 작성할 수 있습니다.
+
+```typescript
+// API Error type
+type FetchError = {
+	statusCode: number,
+	response: any
+};
+```
 
 해당 모듈은 **Promise** 객체를 반환합니다. 아래와 같이 사용 가능합니다.
 
@@ -407,6 +429,9 @@ function(data) {
 function(err) {
   console.log(err);
 };
+      
+// Top-Level await 문법은 Typescript 3.8 RC 버전부터 사용가능합니다.
+const response = await Fetch('/api/first', 'GET');
 ```
 
 
@@ -477,3 +502,4 @@ const Fetch = <T extends object | FormData>(
 
 
 '
+
