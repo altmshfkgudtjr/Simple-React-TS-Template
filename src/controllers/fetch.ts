@@ -1,107 +1,139 @@
-// API Ruturn type
-type FetchResult<T> = {
-	verify: boolean,
-	message: string,
-	data: T
-};
+import * as apiType from 'types/controllers'
+import { FetchResponse } from 'controllers'
 
-// API Error type
-type FetchError = {
-	statusCode: number,
-	response: any
-};
-
-// REST API Method
-type HttpMethod = 'POST' | 'GET' | 'PUT' | 'DELETE' | 'PATCH';
-
+/**
+ * HTTP Reqeust Module
+ * @function
+ * 
+ * @param {string} url URL
+ * @param {'POST' | 'GET' | 'PUT' | 'PATCH' | 'DELETE'} method HTTP Method
+ * @param {object | FormData} sendData Body data
+ * @param {function (res): void} callback Callback when success [Optional]
+ * @param {function (err): void} failed Callback when failed [Optional]
+ * 
+ * @returns {Promise}
+ * 
+ * @example <caption>When using the GET method</caption>
+ * Fetch('/api/v1/test/get', 'GET')
+ * .then(res => {  });
+ * 
+ * @example <caption>When using the POST method</caption>
+ * Fetch('api/v1/test/post', 'POST', {key: 'value'})
+ * .then(res => {  });
+ * 
+ * @example <caption>when sending the FormData</caption>
+ * const sendData = new FormData();
+ * sendData.append('key', 'value');
+ * Fetch('api/v1/test/post', 'POST', sendData)
+ * .then(res => {  });
+ */
 const Fetch = <T = any, U = object | FormData>(
 	url: string,
-	method: HttpMethod,
+	method: apiType.HttpMethod,
 	sendData?: U,
-	callback?: (res: FetchResult<T>) => void,
-	failed?: (res: FetchError) => void
-): Promise<FetchResult<T>> => {
-	/* JWT Auto Authroization using WebStorage */
-	/* If you do not use the webStorage method and use the cookie, please modify this part. */
-	const token = localStorage.getItem('tk');
-	let authorization;
-	if (token === null || token === undefined || token === 'undefined') {
-		authorization = {};
-	} else {
-		authorization = { 'Authorization': "Bearer " + token };
-	}
+	callback?: (res: apiType.FetchResultExtended<T>) => void,
+	failed?: (res: apiType.FetchResultExtended<T>) => void
+): Promise<apiType.FetchResultExtended<T>> => {
+	/**
+	 * FormData Check
+	 * @param data object or FormData
+	 */
+	const checkFormData = (data: any): boolean => data.constructor.toString().slice(9).startsWith('FormData');
+	
+	/** init request form */
+	const isFormData = !!sendData && checkFormData(sendData) ? true : false;
+	
+	const headers = {};
 
-	/* init request form */
-	const isFormData = !!sendData && checkFormData(sendData)
-		? true
-		: false;
-
-	let request: object = {};
+	const request: object = {};
 	if (method === 'GET') {
-		request = {
-			method: 'GET',
-			headers: authorization
-		};
+		Object.assign(request, {
+			method,
+			headers
+		});
 	} else {
-		request = {
+		Object.assign(request, {
 			method,
 			headers: isFormData
-				? {}
-				: Object.assign(authorization, {
-					'Content-Type': 'application/json',
-					'Accept': 'application/json'
+				? headers
+				: Object.assign(headers, {
+					"Content-Type": "application/json",
+					"Accept": "application/json"
 				}),
 			body: isFormData
 				? sendData
 				: JSON.stringify(sendData)
-		}
+		});
 	}
 
 	return fetch(url, request)
 		.then(res => {
-			/* Apply common logic for each HTTP status code */
+			const statusCode = res.status;
+
 			switch (Math.floor(res.status / 100)) {
+				//////// 200 ~ 299 ////////
+				case 2:
+					if (statusCode === 204) {
+						// No-Content
+						return Promise.resolve(new FetchResponse(
+							statusCode, 
+							Promise.resolve({})
+						));
+					}
+					return Promise.resolve(new FetchResponse(statusCode, res.json()));
+
+				//////// 400 ~ 499 ////////
 				case 4:
-					// some code
-					return Promise.reject({
-						statusCode: res.status,
-						response: res.json()
-					});
+					return Promise.reject(new FetchResponse(statusCode, res.json()));
+				
+				//////// 500 ~ 599 ////////
 				case 5:
-					// some code
-					return Promise.reject({
-						statusCode: res.status,
-						response: res.json()
-					});
+					return Promise.reject(new FetchResponse(statusCode, res.json()));
+
 				default:
 					break;
 			}
-
-			return res.json();
+			
+			return Promise.resolve(new FetchResponse(statusCode, res.json()));
 		})
-		.then(res => {
+		.then(async (res) => {
+			const response = await res.response;
+			const result = {
+				statusCode: res.statusCode,
+				...response
+			};
 			if (typeof (callback) === 'function') {
-				callback(res);
+				callback(result);
 			}
 
-			return res;
+			return result;
 		})
 		.catch(async (err) => {
-			let result: FetchError = await err.response;
-			result = {
-				...err,
-				response: result
+			const response = await err.response;
+			const result = {
+				statusCode: err.statusCode,
+				...response
 			};
 			if (typeof (failed) === 'function') {
 				failed(result);
 			}
-
-			return Promise.reject(result);
-			/* or use the method below. */
-			// return result;
+			
+			return result;
 		});
 }
 
-const checkFormData = (data: any): boolean => data.constructor.toString().slice(9).startsWith('FormData');
+
+/**
+ * Converting Query parameters to string
+ * 
+ * @example
+ * const params = {
+ *   search: 'search keyword',
+ *   category: 'IMAGE'
+ * }
+ * const result = paramsToQuery(params);
+ * console.log(result); // "search=search+keyword&category=IMAGE"
+ */
+export const paramsToQuery = (params: apiType.QueryParams): URLSearchParams => new URLSearchParams(params);
 
 export default Fetch

@@ -15,7 +15,13 @@ const SnackbarWrapper = ()=> {
 		dispatch: snackbarDispatch 
 	} = useContext(snackbarContext);
 	
-	const onClick = () => snackbarDispatch(deleteSnackbar());
+	const onClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+		if (e) {
+			e.preventDefault();
+			e.stopPropagation();
+		}
+		snackbarDispatch(deleteSnackbar());
+	}
 
 	return (
 		<Container>
