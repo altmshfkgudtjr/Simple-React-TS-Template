@@ -8,7 +8,7 @@ import animations from 'lib/styles/animations'
 import { SnackbarType } from 'types/modules/snackbar'
 
 interface SnackbarProps {
-	onClick(): void;				// snackbar click function
+	onClick(e: React.MouseEvent<HTMLDivElement, MouseEvent>): void;				// snackbar click function
 	text: string;						// snackbar message
 	type: SnackbarType;			// snackbar type
 }
