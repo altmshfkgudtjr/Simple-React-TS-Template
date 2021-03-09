@@ -1,5 +1,6 @@
 {
   "name": "simple-react-ts-template",
+  "description": "react typescript template",
   "version": "1.0.0",
   "private": false,
   "dependencies": {
@@ -17,9 +18,9 @@
     "typescript": "^4.1.3"
   },
   "scripts": {
-    "start": "env-cmd -f .env react-scripts start",
+    "start": "react-scripts start",
     "prebuild": "react-scripts test --watchAll=false",
-    "build": "cross-env GENERATE_SOURCEMAP=false env-cmd -f .env react-scripts build",
+    "build": "react-scripts build",
     "postbuild": "cp -r build/* ../backend/app/client",
     "test": "react-scripts test"
   },
@@ -46,8 +47,6 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "@types/jest": "^26.0.15",
-    "cross-env": "^7.0.3",
-    "env-cmd": "^10.1.0",
     "react-scripts": "4.0.1"
   },
   "proxy": "http://localhost:5000"
